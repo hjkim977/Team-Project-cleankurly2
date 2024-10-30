@@ -1,0 +1,59 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>주문하기</title>
+    <link rel="stylesheet" href="{% static 'ORDERS_order.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %}
+
+    <main class="order">
+        <h2>주문 내역</h2>
+        <div class="order-info">
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>제품사진</th>
+                        <th>제품명</th> 
+                        <th>수량</th>
+                        <th>가격</th>                     
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                        <tr>
+                            <td>
+                                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ item.product.name }}" style="width: 100px;">
+                            </td>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.total_price|floatformat:0|intcomma }}원</td>
+
+                        </tr>
+                    {% endfor %}                    
+          
+                    <tr class="total">
+                        <td colspan="3">총 가격</td>
+                        <td>{{ cart.get_total_price|floatformat:0|intcomma }}원</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>배송지 정보</h2>
+            <form method="POST" class="order-form">
+                {{ form.as_p }}
+                <p><input type="submit" value="주문요청하기"></p>
+                {% csrf_token %}
+            </form>
+    </main>
+
+    <!-- footer -->
+    {% include 'common/footer.html' %}  
+</body>
+</html>    

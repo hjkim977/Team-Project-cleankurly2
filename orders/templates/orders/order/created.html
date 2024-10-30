@@ -1,0 +1,26 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>주문완료</title>
+    <link rel="stylesheet" href="{% static 'ORDERS_order.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %} 
+
+    <main class="complete">
+        <h2>주문 완료</h2>
+        <p>주문이 완료되었습니다.</p>
+        <p class="text-right">
+            <a href="/" class="button light">홈으로 이동하기</a>
+        </p>
+    </main>
+    
+    <!-- footer -->
+    {% include 'common/footer.html' %} 
+</body>
+</html>    

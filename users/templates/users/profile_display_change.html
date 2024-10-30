@@ -1,0 +1,91 @@
+{% load static %}
+
+<!-- 회원 정보 수정 필드(수정시 개인 페이지에서 변경)-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인 페이지</title>
+    <link rel="stylesheet" href="{% static 'USERS_마켓_로그인2.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %}
+    
+    <main>
+        <h1>개인 페이지</h1>
+        <section class="profile-section">
+            <!-- 프로필 사진 -->
+            <div class="profile-picture">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="프로필 사진">
+                {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" alt="프로필 사진">
+                {% endif %}
+            </div>
+    
+            <!-- 정보 수정 폼 -->
+            <form action="{% url 'profile_edit' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile-info">
+                    <!-- 비필드 오류 메시지 -->
+                    {% if form.non_field_errors %}
+                        <div class="error-message">
+                            {{ form.non_field_errors.as_text }}
+                        </div>
+                    {% endif %}
+    
+                    <!-- 프로필 사진 변경 -->
+                    <label for="profile_picture">프로필 사진:</label>
+                    <input type="file" id="profile_picture" name="profile_picture">
+    
+                    <!-- 아이디 (수정 불가) -->
+                    <p><strong>아이디:</strong></p>
+                    <input type="text" id="username" name="username" value="{{ user.username }}" disabled>
+    
+                    <!-- 이메일 수정 -->
+                    <p><strong>이메일:</strong></p>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+    
+                    <!-- 전화번호 수정 -->
+                    <p><strong>전화번호:</strong></p>
+                    <input type="tel" id="phone_number" name="phone_number" value="{{ user.phone_number }}" required>
+    
+                    <!-- 주소 수정 -->
+                    <p><strong>주소:</strong></p>
+                    <input type="text" id="address" name="address" value="{{ user.address }}" required>
+    
+                    <!-- 생년월일 수정 -->
+                    <p><strong>생년월일:</strong></p>
+                    <input type="date" id="date_of_birth" name="date_of_birth" value="{{ user.date_of_birth }}" required>
+    
+                    <!-- 현재 비밀번호 -->
+                    <p><strong>현재 비밀번호:</strong></p>
+                    <input type="password" id="current_password" name="current_password" required>
+    
+                    <!-- 새 비밀번호 -->
+                    <p><strong>새 비밀번호:</strong></p>
+                    <input type="password" id="password" name="password">
+    
+                    <!-- 새 비밀번호 확인 -->
+                    <p><strong>새 비밀번호 확인:</strong></p>
+                    <input type="password" id="confirm_password" name="confirm_password">
+    
+                    <button type="submit">정보 수정</button>
+                </div>
+            </form>
+        </section>
+        
+        <!-- 로그아웃 버튼 -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">로그아웃</button>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    {% include 'common/footer.html' %}
+</body>
+</html>

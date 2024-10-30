@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{% static 'USERS_마켓_로그인.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %} 
+    
+    <main>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if not request.GET.password_confirmed %}
+            <!-- 비밀번호 확인 폼 -->
+            <div class="password-confirmation">
+                <div class="confirmation-field">
+                    <h3 class="title">비밀번호 재확인</h3>
+                    <p class="description">회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인해주세요.</p>
+        
+                    <form action="" name="confirmForm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="password_confirmed" value="true">
+                        <table class="info-table">
+                            <tbody>
+                                <tr class="username-row">
+                                    <th>아이디</th>
+                                    <td>
+                                        <input type="text" name="id" value="{{ user.username }}" readonly class="readonly-input">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        비밀번호
+                                        <span class="required">
+                                            *
+                                            <span class="hidden">필수항목</span>
+                                        </span>
+                                    </th>
+                                    <td>
+                                        <input type="password" name="confirm_password" id="confirm_password" class="password-input">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+        
+                        <button type="submit" class="submit-button">확인</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <!-- 개인정보 표시 -->
+            <section>
+                <h2>개인 정보</h2>
+                <p><strong>아이디:</strong> {{ user.username }}</p>
+                <p><strong>이메일:</strong> {{ user.email }}</p>
+                <p><strong>전화번호:</strong> {{ user.phone_number }}</p>
+                <p><strong>주소:</strong> {{ user.address }}</p>
+                <p><strong>생년월일:</strong> {{ user.date_of_birth }}</p>
+            </section>
+        {% endif %}
+    
+        <!-- 로그아웃 버튼 -->
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">로그아웃</button>
+        </form>
+
+        <div class="button-container">
+            <a href="{% url 'set_password' %}" class="set-password-button">구글 로그인 하신분들 비밀번호 설정</a>
+          </div>
+            <p class="set-password-message">구글로그인 아닌분들은 403오류 페이지로 이동됩니다</p>
+    </main>
+
+    <!-- footer -->
+    {% include 'common/footer.html' %}
+    </body>
+</html>

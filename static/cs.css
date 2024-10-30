@@ -1,0 +1,221 @@
+/* 게시판 전체 랩 스타일 */
+.custom-board-wrap {
+  width: 1000px;
+  margin: 100px auto;
+}
+
+/* 메인 컨텐츠와 사이드바를 수평으로 배치 */
+.custom-board-main {
+  display: flex;
+}
+
+/* 공지사항 스타일 */
+.custom-board-content {
+  flex: 3; /* 공지사항 영역이 사이드바보다 넓게 설정 */
+}
+
+/* 고객센터 사이드바 스타일 */
+.custom-board-sidebar {
+  flex: 1;
+  margin-right: 60px; /* 사이드바와 공지사항 간의 간격 */
+  margin-top: 0; /* 사이드바 상단 여백 제거 */
+  min-height: 600px; /* 공지사항과 같은 최소 높이 설정 */
+}
+
+/* 고객센터 제목 및 메뉴 스타일 */
+.custom-sidebar-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 55px;
+}
+
+.custom-sidebar-menu {
+  font-size: 0.9rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom-sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+.custom-sidebar-menu a {
+  color: #000; /* 기본 글씨 색상을 검은색으로 설정 */
+  padding: 5px 0;
+  display: block;
+  transition: color 0.3s;
+}
+
+.custom-sidebar-menu a:hover {
+  color: #860d7c; /* 마우스 오버 시 보라색으로 변경 */
+  background: #ffffff; /* 마우스 오버 시 배경색 */
+}
+
+/* 공지사항 제목 스타일 */
+.custom-board-title {
+  margin-bottom: 30px;
+}
+
+.custom-board-title strong {
+  font-size: 2rem;
+}
+
+.custom-board-title p {
+  margin-top: 5px;
+  font-size: 1rem;
+}
+
+/* 버튼 랩 스타일 */
+.custom-bt-wrap {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0;
+}
+
+.custom-bt-wrap a {
+  display: inline-block;
+  min-width: 80px;
+  margin-left: 10px;
+  padding: 10px;
+  border: 1px solid #860d7c;
+  border-radius: 2px;
+  font-size: 0.8rem;
+}
+
+.custom-bt-wrap a:first-child {
+  margin-left: 0;
+}
+
+.custom-bt-wrap a.custom-on {
+  background: #860d7c;
+  color: #fff;
+}
+
+/* 게시판 리스트 스타일 */
+.custom-board-list {
+  width: 100%;
+  border-top: 2px solid #860d7c;
+}
+
+.custom-board-list > div {
+  border-bottom: 1px solid #ddd;
+  font-size: 0;
+}
+
+.custom-board-list > div.custom-top {
+  border-bottom: 1px solid #999;
+}
+
+.custom-board-list > div:last-child {
+  border-bottom: 1px solid #860d7c;
+}
+
+.custom-board-list > div > div {
+  display: inline-block;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.custom-board-list > div.custom-top > div {
+  font-weight: 600;
+}
+
+.custom-board-list .custom-num {
+  width: 10%;
+}
+
+.custom-board-list .custom-title {
+  width: 60%;
+  text-align: left;
+}
+
+.custom-board-list .custom-top .custom-title {
+  text-align: center;
+}
+
+.custom-board-list .custom-writer {
+  width: 10%;
+}
+
+.custom-board-list .custom-date {
+  width: 10%;
+}
+
+.custom-board-list .custom-count {
+  width: 10%;
+}
+
+/* 페이지 네비게이션 스타일 */
+.custom-board-page {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0;
+}
+
+.custom-board-page a {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  border-left: 0;
+  line-height: 100%;
+}
+
+.custom-board-page a.custom-bt {
+  padding-top: 10px;
+  font-size: 1.2rem;
+  letter-spacing: -1px;
+}
+
+.custom-board-page a.custom-num {
+  padding-top: 9px;
+  font-size: 1.0rem;
+}
+
+.custom-board-page a.custom-num.custom-on {
+  border-color: #860d7c;
+  background: #860d7c;
+  color: #fff;
+}
+
+.custom-board-page a:first-child {
+  border-left: 1px solid #ddd;
+}
+
+.custom-board-page a.custom-prev {
+  border-radius: 4px 0 0 4px;
+}
+
+.custom-board-page a.custom-next {
+  border-radius: 0 4px 4px 0;
+}
+
+.custom-board-page a.custom-first,
+.custom-board-page a.custom-last {
+  border-radius: 4px;
+}
+
+/* 사이드바 항목 스타일 */
+.sidebar-item {
+  background: #ffffff; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 색 */
+  border-radius: 5px; /* 테두리 둥글게 */
+  margin-bottom: 10px; /* 각 항목 사이 간격 */
+  padding: 10px; /* 내부 여백 */
+}
+
+.sidebar-item a {
+  color: #000000; /* 사이드바 링크 색상 */
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-item a:hover {
+  color: #860d7c; /* 마우스 오버 시 색상 */
+  background: #ffffff; /* 마우스 오버 시 배경색 */
+  border-color: #c62c6b; /* 마우스 오버 시 테두리 색 */
+}

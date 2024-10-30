@@ -1,0 +1,127 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 상세정보</title>
+    <link rel="stylesheet" href="{% static 'SHOP_product_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'REVIEWS_product_review_section.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        {% include 'common/header.html' %}
+
+        <!-- 상품 디테일 섹션 -->
+        <div class="product-container">
+            <div class="product-image">
+                <!-- 상품 이미지 출력 (product.image 필드에서 이미지 경로를 가져옴) -->
+                <img src="{{ product.image.url }}" alt="{{ product.name }} 이미지">
+            </div>
+        
+            <div class="product-detail">
+                <!-- 상품명 출력 -->
+                <h1 class="product-title">{{ product.name }}</h1>
+            
+                <!-- 할인 가격 및 원가 출력 (discount_price가 있을 경우 할인율 표시) -->
+                {% if product.discount_price %}
+                    <p class="product-price">
+                        <!-- 할인율-->
+                        <span class="discount">{{ product.discount_percentage }}%</span> 
+                        <!-- 할인된 가격 -->
+                        <span class="discount-price">{{ product.discount_price|floatformat:0|intcomma }}원</span>
+                    </p>
+                    <!-- 정상가 -->
+                    <p class="original-price"><del>{{ product.price|floatformat:0|intcomma }}원</del></p>
+                {% else %}
+                    <!-- 할인가가 없으면 정상가만 표시 -->
+                    <p class="original-price-2">{{ product.price|floatformat:0|intcomma }}원</p>
+                {% endif %}
+                
+                <!-- 배송 정보 출력 -->
+                <div class="delivery-info">
+                    <p><strong>배송:</strong> {{ product.shipping_info }}</p> <!-- 배송 정보 -->
+                    <p><strong>판매자:</strong> {{ product.seller }}</p> <!-- 판매자 정보 -->
+                    <p><strong>포장타입:</strong> {{ product.packaging_type }}</p> <!-- 포장 타입 -->
+            
+                    <!-- 판매단위가 있는 경우에만 출력 -->
+                    {% if product.sales_unit %}
+                        <p><strong>판매단위:</strong> {{ product.sales_unit }}</p>
+                    {% endif %}
+            
+                    <!-- 중량/용량이 있는 경우에만 출력 -->
+                    {% if product.weight_volume %}
+                        <p><strong>중량/용량:</strong> {{ product.weight_volume }}</p>
+                    {% endif %}
+            
+                    <!-- 소비기한(또는 유통기한)이 있는 경우에만 출력 -->
+                    {% if product.expiration_date %}
+                        <p><strong>소비기한:</strong> {{ product.expiration_date }}</p>
+                    {% endif %}
+            
+                    <!-- 알레르기 정보가 있는 경우에만 출력 -->
+                    {% if product.allergy_info %}
+                        <p><strong>알레르기 정보:</strong> {{ product.allergy_info }}</p>
+                    {% endif %}
+            
+                    <!-- 축산물 이력정보가 있는 경우에만 출력 -->
+                    {% if product.livestock_trace_info %}
+                        <p><strong>축산물 이력정보:</strong> {{ product.livestock_trace_info }}</p>
+                    {% endif %}
+            
+                    <!-- 안내사항이 있는 경우에만 출력 -->
+                    {% if product.Notice_info %}
+                        <p><strong>안내사항:</strong> {{ product.Notice_info }}</p>
+                    {% endif %}
+                </div>
+            
+                <div class="product-quantity-cart">
+                    <div class="product-quantity">
+                        <form method="POST" action="{% url 'shop:product_detail' product.id %}">
+                            {% csrf_token %}
+                            <label for="quantity">수량:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1" oninput="updateTotalPrice()">
+                            <!-- 총 상품 금액  -->
+                            <div class="total-price">
+                                <p><strong>총 상품 금액:</strong> 
+                                    <span class="price" id="total-price">{{ product.discount_price|default:product.price|floatformat:0|intcomma }}원</span>
+                                </p>
+                            </div>
+                            <button type="submit" class="add-to-cart-btn">장바구니 담기</button> <!-- 선택된 수량과 함께 전송 -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <!-- 리뷰 섹션 -->
+    
+        {% include 'reviews/product_review_section.html' with reviews=reviews blocked_reviews=blocked_reviews user=user %}
+    
+    </div> 
+
+    <!-- JavaScript로 수량 변화 감지 및 총 금액 업데이트 -->
+    <script>
+        function updateTotalPrice() {
+            // 수량 값 가져오기
+            var quantity = document.getElementById('quantity').value;
+    
+            // 가격 가져오기 (할인된 가격이 있는지 확인 후 계산)
+            var price = parseFloat("{{ product.discount_price|default:product.price }}");
+    
+            // 총 가격 계산
+            var totalPrice = quantity * price;
+    
+            // 총 금액을 천 단위 콤마를 추가해서 표시
+            document.getElementById('total-price').innerText = totalPrice.toLocaleString() + '원';
+        }
+    </script>
+
+    
+    
+    <!-- footer -->
+    {% include 'common/footer.html' %}
+</body>
+</html>

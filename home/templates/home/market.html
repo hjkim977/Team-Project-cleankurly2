@@ -1,0 +1,603 @@
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>클린컬리</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'HOME_마켓.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- haeder 수정 -->
+    {% include 'common/header.html' %}
+
+    <!-- 팝업 -->
+     <!-- 오늘 하루 안보기 버튼을 누르게 되면 쿠키에 hidePopup이 활성화되어 팝업이 숨겨지게 됩니다.
+          다시 팝업창 활성화 하고 싶으면 해당 홈페이지의 쿠키를 초기화하면 되는데 방법은
+          F12로 개발자 도구에 들어간다음 Application 누른 후 좌측 Storage 내 Cookies 안에 해당 홈페이지 주소에서 우클릭 후 Clear를 해줍니다
+          이후 새로고침하면 팝업이 등장합니다! (팝업은 처음 홈페이지 시작시와, 왼쪽 상단의 클린 컬리 배너를 누를시 자동으로 등장합니다.)-->
+    <div class="popup" id="popupContainer">
+        <dialog class="popup__container" id="popupDialog">
+            <div class="popup__img">
+                <a href="#">
+                    <img class="img__detail" src="{% static 'images/popup.jpg' %}" alt="칼리 뷰티 플랫폼 상세페이지">
+                </a>
+            </div>
+            <form method="dialog">
+                <button class="button__closeToday" value="cancel" id="closeToday">오늘 하루 안보기</button>
+                <button class="button__close" value="default">닫기</button>
+            </form>
+        </dialog>
+    </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const popupDialog = document.getElementById('popupDialog');
+            const closeTodayBtn = document.getElementById('closeToday');
+            const popupElement = document.getElementById('popupContainer'); // 팝업 전체 요소
+
+            // 쿠키에서 'hidePopup' 값 확인
+            if (document.cookie.indexOf('hidePopup=true') === -1) {
+                popupDialog.showModal(); // 팝업 열기
+            } else {
+                popupDialog.close();
+                popupElement.style.display = 'none';  // 팝업 요소를 숨김
+            }
+
+            // "오늘 하루 안보기" 버튼 클릭 시
+            closeTodayBtn.addEventListener('click', function () {
+                // 쿠키에 hidePopup 값 설정 (하루 동안 유지)
+                document.cookie = "hidePopup=true; max-age=86400; path=/";
+                popupDialog.close();
+                popupElement.style.display = 'none';  // 팝업 전체 숨기기
+                document.body.classList.remove('modal-open');  // 페이지의 스크롤 활성화
+            });
+
+            // "닫기" 버튼 클릭 시 팝업 닫기
+            popupDialog.addEventListener('close', function () {
+                popupElement.style.display = 'none';  // 팝업 전체 숨기기
+                document.body.classList.remove('modal-open');  // 페이지의 스크롤 활성화
+            });
+        });
+      </script>
+
+
+
+    <!-- 메인 이벤트 섹션 -->
+    <section class="event">
+        <h2 class="a11yHidden">메인 이벤트</h2>
+        <div class="event__wrapper">
+            <img src="{% static 'images/컬리배너1.png' %}" alt="새학기를 위한 스타일 빈폴키즈 스쿨룩" class="event__image active" id="banner1">
+            <img src="{% static 'images/컬리배너2.png' %}" alt="명절엔 꼬까옷 입어요 어린이 한복 추천" class="event__image" id="banner2">
+            <img src="{% static 'images/컬리배너3.png' %}" alt="함께 즐기기 좋은 간편식 총집합" class="event__image" id="banner3">
+            <img src="{% static 'images/컬리배너4.jpg' %}" alt="선물하기 좋은 리빙 위시리스트" class="event__image" id="banner4">
+            <img src="{% static 'images/컬리배너5.jpg' %}" alt="언제, 어디서든 컬리카드 적립 생활" class="event__image" id="banner5">
+            <img src="{% static 'images/컬리배너6.jpg' %}" alt="말랑 쫀득 달콤 절정의 황도 즐기기" class="event__image" id="banner6">
+
+            <button type="button" class="button__left" aria-label="왼쪽 이벤트 페이지로 이동" onclick="showPreviousBanner()">
+                <img src="{% static 'images/화살표오른쪽.svg' %}" alt="왼쪽 이동 화살표">
+            </button>
+            <button type="button" class="button__right" aria-label="오른쪽 이벤트 페이지로 이동" onclick="showNextBanner()">
+                <img src="{% static 'images/화살표왼쪽.svg' %}" alt="오른쪽 이동 화살표">
+            </button>
+        </div>
+    </section>
+
+
+    <script>
+        let currentBanner = 1;
+        const totalBanners = 6; // 전체 배너의 수
+
+        setInterval(showNextBanner, 3000); //해당 시간 지난 후 다음 배너로
+    
+        function showNextBanner() {
+            const current = document.getElementById(`banner${currentBanner}`);
+            current.classList.remove('active');
+    
+            currentBanner = (currentBanner % totalBanners) + 1; // 1에서 totalBanners까지 순환
+    
+            const next = document.getElementById(`banner${currentBanner}`);
+            next.classList.add('active');
+        }
+    
+        function showPreviousBanner() {
+            const current = document.getElementById(`banner${currentBanner}`);
+            current.classList.remove('active');
+    
+            currentBanner = (currentBanner === 1 ? totalBanners : currentBanner - 1); // 1에서 totalBanners까지 순환
+    
+            const previous = document.getElementById(`banner${currentBanner}`);
+            previous.classList.add('active');
+        }
+    </script>
+
+    <!-- 상품 슬라이더 HTML -->
+    <section class="goodsUp">
+        <br>
+        <h2 class="goods__title">🛒이 상품 어때요?</h2>
+        <br>
+
+        <div class="slider-container">
+            <div class="slider">
+                {% for product in products %}
+                <div class="goods__list">
+                    <a href="{% url 'shop:product_detail' product.id %}" class="goods__link" title="{{ product.name }} 상세페이지">
+                        <dl class="goods__item goods__discount">
+                            <dd class="goods__thumbnail">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }} 이미지" aria-hidden="true">
+                            </dd>
+                        </dl>
+                    </a>
+
+                    <!-- 모달창 -->                    
+                    <button type="button" class="button__cart" onclick="openModal('{{ product.name }}',
+                                                                                '{{ product.price|floatformat:0|intcomma }}', 
+                                                                                '{{ product.discount_price|floatformat:0|intcomma }}',
+                                                                                '{{ product.id}}')">
+                        🛒 담기
+                    </button>
+                    
+
+
+
+                    <a href="{% url 'shop:product_detail' product.id %}" class="goods__link" title="{{ product.name }} 상세페이지">
+                        <dl class="goods__item goods__discount">
+                            <dd class="goods__name">{{ product.name }}</dd>
+                            {% if product.discount_price %}
+                                <dt class="a11yHidden">정상가</dt>
+                                <dd class="goods__regPrice"><del>{{ product.price|floatformat:0|intcomma }} 원</del></dd>
+                                <dt class="a11yHidden">할인가</dt>
+                                <dd class="goods__disPrice">
+                                    <b class="goods__disRate">{{ product.discount_percentage }}% </b>
+                                    <ins>{{ product.discount_price|floatformat:0|intcomma }} 원</ins>
+                                </dd>
+                            {% else %}
+                                <dd class="goods__disPrice">
+                                    <ins>{{ product.price|floatformat:0|intcomma }} 원</ins>
+                                </dd>
+                            {% endif %}
+                        </dl>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="prev-btn2" aria-label="이전 상품으로 이동">
+                <img src="{% static 'images/화살표왼쪽.svg' %}" alt="이전 화살표">
+            </button>
+            <!-- 다음 버튼 -->
+            <button class="next-btn2" aria-label="다음 상품으로 이동">
+                <img src="{% static 'images/화살표오른쪽.svg' %}" alt="다음 화살표">
+            </button>
+        </div>
+    </section>
+
+    <!--모달-->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalProductName"></h3>
+            <div>
+                <span id="discountSection" class="price"><span id="discountPrice"></span></span>
+                <span id="normalPrice" class="price"></span> 
+                
+                <!-- 수량 선택 -->
+                <div class="quantity-container">
+                    <label for="quantity"></label>
+                    <select id="quantity" onchange="updateTotalPrice()"></select>
+                </div>
+            </div>
+
+            <!-- 합계 -->
+            <div class="total-price-container">
+                <span class="total-label">합계</span>
+                <span id="totalPrice" class="total-price"></span>
+            </div> 
+
+            <!-- 장바구니 담기 -->                           
+            <form id="addToCartForm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" id="formQuantity" value="1">
+                <input type="hidden" name="price" id="formPrice" value=""> <!-- 가격 정보 추가 -->
+                <input type="hidden" name="override" value="false">
+                <button type="submit" class="addToCart">
+                    장바구니 담기
+                </button>
+            </form>                   
+        </div>
+    </div>
+
+    <script>
+        // 모달 열기 함수
+        function openModal(name, price, discountPrice, productId) {
+            const modal = document.getElementById("modal");
+            modal.style.display = "flex"; // 모달을 표시
+
+            // body 스크롤 막기
+            document.body.style.overflow = "hidden";
+
+            // 상품명 설정
+            document.getElementById("modalProductName").innerText = name;
+
+            // 정상 가격 설정
+            const normalPriceElement = document.getElementById("normalPrice");
+            normalPriceElement.innerText = price + "원"; // 가격을 문자열로 표시
+
+            // 할인가가 있는지 확인하고 설정
+            const discountSection = document.getElementById("discountSection");
+            const discountPriceElement = document.getElementById("discountPrice");
+
+            // 초기화 - 항상 먼저 실행
+            discountSection.style.display = "none"; // 할인가 섹션 숨김
+            normalPriceElement.classList.remove("line-through", "gray-text"); // 가로줄과 회색 제거
+            discountPriceElement.innerText = ''; // 할인 가격 초기화
+            
+            let finalPrice = price;  // 기본 가격 설정
+            
+
+            if (discountPrice && discountPrice !== 'None') {
+                document.getElementById("discountPrice").innerText = discountPrice + "원"; // 할인가 표시
+                discountSection.style.display = "inline"; // 할인가 섹션 표시
+                normalPriceElement.classList.add("line-through", "gray-text"); // 정상가에 가로줄과 회색 적용
+                
+            } else {
+                discountSection.style.display = "none"; // 할인가가 없으면 숨김
+                normalPriceElement.classList.remove("line-through", "gray-text"); // 가로줄과 회색 제거
+            }
+
+            // formPrice를 최종 가격으로 설정
+            document.getElementById("formPrice").value = discountPrice && discountPrice !== 'None'
+                ? parseInt(discountPrice.replace(/,/g, ''))
+                : parseInt(price.replace(/,/g, '')); // 할인가가 있으면 할인가, 없으면 정상가
+
+
+            // 수량 선택 옵션 생성 (1부터 100까지)
+            const quantitySelect = document.getElementById("quantity");
+            quantitySelect.innerHTML = ''; // 기존 옵션 초기화
+            for (let i = 1; i <= 100; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                quantitySelect.appendChild(option);
+            }
+
+            // 장바구니 폼의 action URL 설정 (productId 활용)
+            document.getElementById("addToCartForm").action = `/cart/add/${productId}/`;
+
+            // 초기 합계 업데이트
+            updateTotalPrice();
+        }
+
+        // 총 가격 업데이트
+        function updateTotalPrice() {
+            const priceText = document.getElementById("normalPrice").innerText;
+            const discountPriceText = document.getElementById("discountPrice").innerText;
+            let price = parseInt(priceText.replace(/,/g, '').replace('원', '')); // 문자열을 숫자로 변환
+
+            // 할인가가 있으면 할인가로 설정
+            if (discountPriceText && discountPriceText !== '') {
+                price = parseInt(discountPriceText.replace(/,/g, '').replace('원', ''));
+            }
+
+            // 선택한 수량 가져오기
+            const quantity = parseInt(document.getElementById("quantity").value);
+
+            // 총 가격 계산
+            const totalPrice = price * quantity;
+            document.getElementById("totalPrice").innerText = totalPrice.toLocaleString() + "원"; // 총 가격 표시
+
+            // 폼에 수량 및 가격 업데이트
+            document.getElementById("formQuantity").value = quantity;
+            document.getElementById("formPrice").value = price; // 할인가 혹은 정상가 반영
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            
+            modal.style.display = "none"; // 모달 숨김
+            document.body.style.overflow = "auto"; // 배경 스크롤 다시 허용
+            
+
+        }
+    </script>
+    <div id="slider-container" data-total-items="{{ total_items }}"></div>
+    <script>
+        const slider = document.querySelector('.slider');
+        const prevBtn = document.querySelector('.prev-btn2');
+        const nextBtn = document.querySelector('.next-btn2');
+
+        let currentPage = 1;  // 현재 페이지 번호
+        const totalItems = parseInt(document.getElementById('slider-container').getAttribute('data-total-items')) || 0;
+        const itemsPerPage = 4;  // 한 페이지에 보여줄 상품 수
+        const totalPages = Math.ceil(totalItems / itemsPerPage);  // 총 페이지 수 계산
+
+        // 각 상품의 너비 (이미지 크기 + 간격)
+        const itemWidth = 280 + 20;  // 상품 너비 + 간격(20px)
+
+        // 슬라이더 전체 너비 설정 (상품 너비 * 총 상품 개수)
+        slider.style.width = `${itemWidth * totalItems}px`;
+
+        // 다음 버튼 클릭 시 상품 부드럽게 넘기기
+        function showNextPage() {
+            const slider = document.querySelector('.slider');
+            if (currentPage < totalPages) {
+                currentPage++;  // 다음 페이지로 이동
+            } else {
+                currentPage = 1;  // 마지막 페이지에서 첫 번째로 돌아감
+            }
+
+            const offset = -(currentPage - 1) * itemWidth * itemsPerPage;  // 슬라이더의 너비만큼 이동
+            slider.style.transform = `translateX(${offset}px)`;  // 가로로 슬라이더 이동
+        }
+
+        // 이전 버튼 클릭 시 상품 부드럽게 넘기기
+        function showPreviousPage() {
+            const slider = document.querySelector('.slider');
+            if (currentPage > 1) {
+                currentPage--;  // 이전 페이지로 이동
+            } else {
+                currentPage = totalPages;  // 첫 번째 페이지에서 마지막 페이지로
+            }
+
+            const offset = -(currentPage - 1) * itemWidth * itemsPerPage;  // 슬라이더의 너비만큼 이동
+            slider.style.transform = `translateX(${offset}px)`;  // 가로로 슬라이더 이동
+        }
+
+        // 버튼에 이벤트 핸들러 연결
+        nextBtn.addEventListener('click', showNextPage);
+        prevBtn.addEventListener('click', showPreviousPage);
+
+    </script>
+    
+    <section class="special-offers">
+        <h2 class="special-offers__title">&#127873; 선물특가</h2>
+        <div class="special-offers__container">
+            <div class="special-offers__left">
+                <div class="special-offers__timer">
+                    <div class="special-offers__timer-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="20" height="20" preserveAspectRatio="xMidYMid meet">
+                            <circle cx="18" cy="18" r="14" fill="rgb(189,118,255)" />
+                            <!-- 시침-->
+                            <line x1="18" y1="18" x2="18" y2="10" stroke="rgb(255,255,255)" stroke-width="2" stroke-linecap="round" />
+                            <!-- 분침 -->
+                            <line x1="18" y1="18" x2="26" y2="18" stroke="rgb(255,255,255)" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="special-offers__timer-countdown" id="countdown">
+                        <p>00:00:00</p> <!-- 초기 타이머 표시 -->
+                    </div>
+                </div>
+                <br>
+                <p class="small-gray-text">망설이면 늦어요!</p>
+            </div>
+            <div class="special-offers__right">
+                <!-- 첫 번째 상품 -->
+                <div class="special-offers__product">
+                    <a href="#" class="special-offers__link" title="[선물세트] HBAF 매일 상품페이지">
+                        <dl class="special-offers__product-item special-offers__discount">
+                            <dd class="special-offers__product-thumbnail">
+                                <img src="{% static 'images/hbaf.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                            </dd>
+                            <button type="button" class="special-offers__button-cart" aria-label="장바구니로 이동">
+                                🛒 담기
+                            </button>
+                            <dd class="special-offers__product-name">
+                                <span aria-hidden="true">[주말특가][</span>선물세트<span aria-hidden="true">]</span> HBAF 매일 색다른 먼투썬 하루견과 6주 (20gX42봉)
+                            </dd>
+                            <dt class="a11yHidden">정상가</dt>
+                            <dd class="special-offers__product-regPrice">
+                                <del>34,900 원</del>
+                            </dd>
+                            <dt class="a11yHidden">할인가</dt>
+                            <dd class="special-offers__product-disPrice">
+                                <b class="special-offers__product-disRate">20%</b>
+                                <ins>27,900 원</ins>
+                            </dd>
+                        </dl>
+                    </a>
+                </div>
+                <!-- 두 번째 상품 -->
+                <div class="special-offers__product">
+                    <a href="#" class="special-offers__link" title="[선물세트] 설렁탕 상세페이지">
+                        <dl class="special-offers__product-item special-offers__discount">
+                            <dd class="special-offers__product-thumbnail">
+                                <img src="{% static 'images/설렁탕.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                            </dd>
+                            <button type="button" class="special-offers__button-cart" aria-label="장바구니로 이동">
+                                🛒 담기
+                            </button>
+                            <dd class="special-offers__product-name">
+                                <span aria-hidden="true">[주말특가][</span>선물세트<span aria-hidden="true">]</span> 신선설농탕 고기 설렁탕6입 세트
+                            </dd>
+                            <dt class="a11yHidden">정상가</dt>
+                            <dd class="special-offers__product-regPrice">
+                                <del>46,000 원</del>
+                            </dd>
+                            <dt class="a11yHidden">할인가</dt>
+                            <dd class="special-offers__product-disPrice">
+                                <b class="special-offers__product-disRate">20%</b>
+                                <ins>36,800 원</ins>
+                            </dd>
+                        </dl>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function updateCountdown(endTime) {
+                const now = new Date();
+                const timeRemaining = endTime - now;
+                
+                // 만약 시간이 이미 지났다면 종료
+                if (timeRemaining <= 0) {
+                    document.querySelector("#countdown p").textContent = '00:00:00';
+                    return;
+                }
+                
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    
+                // '일'을 조건부로 출력
+                const dayString = days > 0 ? `${days}일 ` : '';
+                document.querySelector("#countdown p").textContent =
+                    `${dayString}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+    
+            // 로컬 스토리지에서 종료 시간 불러오기
+            let endTime = localStorage.getItem("endTime");
+            
+            // 종료 시간이 없거나 이미 종료된 경우 새로 설정
+            if (!endTime || new Date(endTime) - new Date() <= 0) {
+                endTime = new Date();
+                endTime.setMinutes(endTime.getMinutes() + 120);
+                localStorage.setItem("endTime", endTime); // 종료 시간을 로컬 스토리지에 저장
+            } else {
+                endTime = new Date(endTime);
+            }
+    
+            // 1초마다 카운트다운 업데이트
+            setInterval(() => updateCountdown(endTime), 1000);
+        });
+
+                
+    </script>
+
+    
+
+   <br>
+        <!-- banner -->    
+        <section class="banner">        
+            <div class="banner_container">    
+                <a href="#" class="banner_link"> 
+                    <img 
+                        src="{% static 'images/미니 배너1.jpg' %}"
+                        alt="배너 이미지" 
+                        class="banner_image" 
+                        style="object-fit: cover; width: 100%; height: 100%;">
+                </a>
+            </div>
+        </section>
+
+
+    <!--향은: 두 번째 섹션 부분은 상품 등록 안하고 일단 이렇게 냅둘게요!!!-->
+    <br>
+        <!-- 두 번째 섹션 추가 -->
+    <section class="goodsUp">
+        <br>
+        <!-- 상품2 제목 -->
+        <h2 class="goods__title">&#127765; 최대 혜택으로 추석 맞이! 🍂</h2>
+        <br>
+        <!-- 상품2 목록 -->
+        <div class="goods__group">
+            <!-- 첫번째 요소 -->
+            <div class="goods__list">
+                <a href="#" class="goods__link" title="[선물세트] 호주산 LA꽃갈비 상세페이지">
+                    <dl class="goods__item goods__discount">
+                        <dd class="goods__thumbnail">
+                            <img src="{% static 'images/꽃갈비.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                        </dd>
+                        <button type="button" class="button__cart" aria-label="장바구니로 이동">
+                            🛒 담기
+                        </button>
+                        <dd class="goods__name">
+                            <span aria-hidden="true">[</span>선물세트<span aria-hidden="true">]</span> 호주산 LA꽃갈비 2kg(냉동) (예약일 수령)
+                        </dd>
+                        <dt class="a11yHidden">정상가</dt>
+                        <dd class="goods__regPrice"><del>139,900 원</del></dd>
+                        <dt class="a11yHidden">할인가</dt>
+                        <dd class="goods__disPrice">
+                            <b class="goods__disRate">24%</b>
+                            <ins>104,990 원</ins>
+                        </dd>
+                    </dl>
+                </a>
+            </div>
+
+            <!-- 두번째 요소 -->
+            <div class="goods__list">
+                <a href="#" class="goods__link" title="[선물세트] 공진단 상세페이지">
+                    <dl class="goods__item goods__discount">
+                        <dd class="goods__thumbnail">
+                            <img src="{% static 'images/공진단.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                        </dd>
+                        <button type="button" class="button__cart" aria-label="장바구니로 이동">
+                            🛒 담기
+                        </button>
+                        <dd class="goods__name">
+                            <span aria-hidden="true">[</span>선물세트<span aria-hidden="true">]</span> 혜윰 별빛공진 +(보자기포장 및 쇼핑백 증정)
+                        </dd>
+                        <dt class="a11yHidden">정상가</dt>
+                        <dd class="goods__regPrice"><del>160,000 원</del></dd>
+                        <dt class="a11yHidden">할인가</dt>
+                        <dd class="goods__disPrice">
+                            <b class="goods__disRate">35%</b>
+                            <ins>104,000 원</ins>
+                        </dd>
+                    </dl>
+                </a>
+            </div>
+            
+
+            <!-- 세번째 요소 -->
+            <div class="goods__list">
+                <a href="#" class="goods__link" title="[정관장] 홍삼정 에브리타임 상세페이지">
+                    <dl class="goods__item goods__discount">
+                        <dd class="goods__thumbnail">
+                            <img src="{% static 'images/정관장.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                        </dd>
+                        <button type="button" class="button__cart" aria-label="장바구니로 이동">
+                            🛒 담기
+                        </button>
+                        <dd class="goods__name">
+                            <span aria-hidden="true">[</span>정관장<span aria-hidden="true">]</span> 홍삼정 에브리타임 소프트 (30일분) (+보자기포장)
+                        </dd>
+                        <dt class="a11yHidden">정상가</dt>
+                        <dd class="goods__regPrice"><del>77,000 원</del></dd>
+                        <dt class="a11yHidden">할인가</dt>
+                        <dd class="goods__disPrice">
+                            <b class="goods__disRate">10%</b>
+                            <ins>69,300 원</ins>
+                        </dd>
+                    </dl>
+                </a>
+            </div>
+            
+
+            <!-- 네번째 요소 -->
+            <div class="goods__list">
+                <a href="#" class="goods__link" title="[비오템] 아쿠아 파워 올인원 상세페이지">
+                    <dl class="goods__item goods__discount">
+                        <dd class="goods__thumbnail">
+                            <img src="{% static 'images/올인원.jpg' %}" alt="상품 이미지" aria-hidden="true">
+                        </dd>
+                        <button type="button" class="button__cart" aria-label="장바구니로 이동">
+                            🛒 담기
+                        </button>
+                        <dd class="goods__name">
+                            <span aria-hidden="true">[</span>비오템<span aria-hidden="true">]</span> 아쿠아 파워 올인원 200ml 추석 선물세트
+                        </dd>
+                        <dt class="a11yHidden">정상가</dt>
+                        <dd class="goods__regPrice">
+                            <del>62,000 원</del>
+                        </dd>
+                        <dt class="a11yHidden">할인가</dt>
+                        <dd class="goods__disPrice">
+                            <b class="goods__disRate">15%</b>
+                            <ins>52,700 원</ins>
+                        </dd>
+                    </dl>
+                </a>
+            </div>
+    </section>
+    <br>
+
+    {% include 'common/footer.html' %}
+</body>
+</html>

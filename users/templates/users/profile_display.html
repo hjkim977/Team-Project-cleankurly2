@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인페이지</title>
+    <link rel="stylesheet" href="{% static 'USERS_마켓_로그인.css' %}">
+    <link rel="stylesheet" href="{% static 'REVIEWS_review_mypage.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %}
+    
+    <main>
+        <h1>개인 페이지</h1>
+        <section class="profile-section">
+            {% if user.profile_picture %}
+                <div class="profile-picture">
+                    <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}/static/images/default_profile.png{% endif %}" alt="프로필 사진">
+                </div>
+            {% else %}
+                <div class="profile-picture">
+                    <p>프로필 사진이 없습니다.</p>
+                </div>
+            {% endif %}
+            
+            <div class="profile-info">
+                <p><strong>아이디:</strong> {{ user.username }}</p>
+                <p><strong>이메일:</strong> {{ user.email }}</p>
+                <p><strong>전화번호:</strong> {{ user.phone_number }}</p>
+                <p><strong>주소:</strong> {{ user.address }}</p>
+                <p><strong>생년월일:</strong> {{ user.date_of_birth }}</p>
+            </div>
+        </section>
+
+        <div class="mileage-section">
+            <h4>반가워요! {{ user.username }}님</h4>
+            <p>최초 1회 무료배송</p>
+            <div class="mileage-details">
+                <div class="mileage">
+                    <p>적립금</p>
+                    <span>
+                        {{ user.mileage|floatformat:0 }}원
+                    </span>
+                </div>
+                <div class="karly-cash">
+                    <p>컬리캐시</p>
+                    <span>
+                        {{ user.karly_cash|floatformat:0 }}원
+                    </span>
+                </div>
+            </div>
+            <div class="update-buttons">
+                <a href="{% url 'update_mileage' %}" class="update-miles-button add-miles-button">적립금/캐시 추가</a>
+                <a href="{% url 'delete_mileage' %}" class="update-miles-button delete-miles-button">적립금/캐시 삭제</a>
+            </div>
+        </div>
+        
+        <div class="user-controls-new"> <!-- 새로운 사용자 컨트롤 클래스 이름 -->
+            <!-- 로그아웃 버튼 -->
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        
+            <!-- 회원정보 수정 버튼 -->
+            <a href="{% url 'profile_edit' %}" class="profile-edit-button">회원정보 수정</a>
+            
+            <!-- 회원 탈퇴 -->
+            <a href="{% url 'delete_account' %}"class="profile-edit-button2" >회원 탈퇴</a>
+
+            <!-- 주문내역 조회 -->
+            <a href="{% url 'profile_order_view' %}" class="profile-edit-button3">주문내역 조회</a> 
+            
+            
+        </div>
+
+  
+        {% include 'reviews/review_mypage.html' %}
+ 
+    </main>
+
+    <!-- Footer -->
+    {% include 'common/footer.html' %}
+    </body>
+</html>

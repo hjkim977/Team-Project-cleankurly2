@@ -1,0 +1,25 @@
+/* Banner Styles */
+.banner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+}
+
+.banner_container {
+    width: 1200px;
+    position: relative;
+}
+
+.banner_link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: 200px;
+}
+
+.banner_image {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+}

@@ -1,0 +1,29 @@
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'USERS_마켓_로그인.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    {% include 'common/header.html' %}
+
+    <!-- Main content -->
+    <main>
+        <div class="signup">
+            <h2 class="signup__title">회원가입</h2>
+            <form action="{% url 'signup' %}" method="post" enctype="multipart/form-data" class="signup__form">
+                {% csrf_token %}
+                {{ form.as_p }} <!-- 폼 필드를 자동으로 렌더링합니다 -->
+                <button type="submit" class="signup__button">회원가입</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'common/footer.html' %}
+    </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객센터</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'cs.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <!-- 헤더 수정 -->
+    {% include 'common/header.html' %}
+
+    <div class="custom-board-wrap">
+        <div class="custom-board-main">
+            <!-- 고객센터 사이드바 -->
+            <div class="custom-board-sidebar">
+                <div class="custom-sidebar-title">고객센터</div>
+                <div class="custom-sidebar-menu">
+                    <div class="sidebar-item"><a href="#">공지사항</a></div>
+                    <div class="sidebar-item"><a href="#">자주하는 질문</a></div>
+                    <div class="sidebar-item"><a href="#">1:1 문의</a></div>
+                    <div class="sidebar-item"><a href="{% url 'shop:purchase_history' %}">구매 이력 조회</a></div>
+                    <div class="sidebar-item"><a href="{% url 'shop:product_manage' %}">상품 관리</a></div>
+                    <div class="sidebar-item"><a href="{% url 'reviews:report_list' %}">리뷰 신고 관리</a></div>
+                </div>
+            </div>
+
+            <!-- 공지사항 섹션 -->
+            <div class="custom-board-content">
+                <div class="custom-board-title">
+                    <strong>공지사항</strong>
+                    <p>컬리의 새로운 소식들과 유용한 정보들을 한곳에서 확인하세요.</p>
+                </div>
+                <div class="custom-board-list-wrap">
+                    <div class="custom-board-list">
+                        <div class="custom-top">
+                            <div class="custom-num">번호</div>
+                            <div class="custom-title">제목</div>
+                            <div class="custom-writer">작성자</div>
+                            <div class="custom-date">작성일</div>
+                            <div class="custom-count">조회</div>
+                        </div>
+                        <div>
+                            <div class="custom-num">공지</div>
+                            <div class="custom-title"><a href="#">[안내] 2024 추석 연휴 배송 일정 안내</a></div>
+                            <div class="custom-writer">컬리</div>
+                            <div class="custom-date">2024.09.09</div>
+                            <div class="custom-count">33</div>
+                        </div>
+                        <div>
+                            <div class="custom-num">4</div>
+                            <div class="custom-title"><a href="#">[이벤트] 09/10(화) 정관장 라이브 방송 당첨자 안내</a></div>
+                            <div class="custom-writer">컬리</div>
+                            <div class="custom-date">2024.09.10</div>
+                            <div class="custom-count">357</div>
+                        </div>
+                        <div>
+                            <div class="custom-num">3</div>
+                            <div class="custom-title"><a href="#">[이벤트] 9/6(금) 배스킨라빈스 라이브 방송 당첨자 안내</a></div>
+                            <div class="custom-writer">컬리</div>
+                            <div class="custom-date">2024.09.06</div>
+                            <div class="custom-count">365</div>
+                        </div>
+                        <div>
+                            <div class="custom-num">2</div>
+                            <div class="custom-title"><a href="#">[안내] 제주 하루배송 권역 추가 안내(2024.09.07~)</a></div>
+                            <div class="custom-writer">컬리</div>
+                            <div class="custom-date">2024.09.06</div>
+                            <div class="custom-count">112</div>
+                        </div>
+                        <div>
+                            <div class="custom-num">1</div>
+                            <div class="custom-title"><a href="#">[공지] 용량변경상품 정보제공 안내</a></div>
+                            <div class="custom-writer">컬리</div>
+                            <div class="custom-date">2024.08.26</div>
+                            <div class="custom-count">757</div>
+                        </div>
+                    </div>
+                    <div class="custom-board-page">
+                        <a href="#" class="custom-bt custom-first"><<</a>
+                        <a href="#" class="custom-bt custom-prev"><</a>
+                        <a href="#" class="custom-num custom-on">1</a>
+                        <a href="#" class="custom-num">2</a>
+                        <a href="#" class="custom-num">3</a>
+                        <a href="#" class="custom-num">4</a>
+                        <a href="#" class="custom-num">5</a>
+                        <a href="#" class="custom-bt custom-next">></a>
+                        <a href="#" class="custom-bt custom-last">>></a>
+                    </div>
+                    <div class="custom-bt-wrap">
+                        <a href="#" class="custom-on">목록</a>
+                        <!-- <a href="#">수정</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const pageLinks = document.querySelectorAll('.custom-board-page a.custom-num');
+
+        pageLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+            e.preventDefault(); // 기본 링크 동작 방지
+            
+            // 모든 페이지 번호에서 'custom-on' 클래스 제거
+            pageLinks.forEach(link => link.classList.remove('custom-on'));
+            
+            // 클릭된 페이지 번호에 'custom-on' 클래스 추가
+            this.classList.add('custom-on');
+            });
+        });
+    });
+    </script>
+    <!-- footer 수정 -->
+    {% include 'common/footer.html' %}
+</body>
+</html>

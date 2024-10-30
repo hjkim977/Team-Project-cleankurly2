@@ -1,0 +1,166 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.product-container {
+  display: flex; /* 상품 이미지와 디테일을 나란히 배치 */
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: flex-start; /* 상단을 기준으로 정렬 */
+  gap: 20px; /* 상품 이미지와 디테일 사이의 간격 */
+  margin-top: 30px;
+}
+
+.review-container {
+  width: 100%;  /* % 단위 추가 */
+  max-width: 1200px;  /* container와 동일한 max-width */
+  margin: 0 auto;  /* 중앙 정렬 */
+}
+
+.product-image img {
+  width: 450px;  /* 원하는 너비 */
+  height: auto;  /* 높이를 자동으로 조정하여 비율을 유지 */
+  
+  border-radius: 10px;
+}
+
+.product-detail {
+  max-width: 600px; /* 상품 정보의 최대 너비를 설정 */
+  height: auto;
+  padding: 20px;
+}
+
+.product-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.product-price {
+  font-size: 26px;
+  font-weight: bold;
+  color: #d9534f;
+  margin-bottom: 5px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #aaa;
+  margin-bottom: 15px;
+}
+.original-price-2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 5px;
+}
+
+.discount {
+  font-weight: bold; /* 강조를 위해 굵게 설정 */
+  color: #fa622f;
+}
+
+.discount-price {
+  color: #000000;
+}
+
+.product-origin{
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+
+/* 수량 선택 부분 */
+.product-quantity-cart {
+  display: block; /* 세로 배치 */
+  margin-bottom: 10px; /* 아래 요소와의 간격 */
+}
+
+.product-quantity {
+  margin-bottom: 10px; /* 수량 선택 부분과 장바구니 버튼 사이의 간격 */
+}
+
+.product-quantity label {
+  display: block; /* 수량 라벨을 블록으로 설정하여 칸과 분리 */
+  margin-bottom: 5px; /* 라벨과 입력 칸 사이의 간격 */
+}
+
+.product-quantity input[type="number"] {
+  display: block;
+  width: 60px; /* 가로 크기 조정 */
+  height: 50px; /* 세로 크기 조정 */
+  font-size: 16px; /* 입력 필드 텍스트 크기 */
+  text-align: center; /* 수량 가운데 정렬 */
+}
+
+.add-to-cart-btn {
+  display: block;
+  padding: 10px 20px;
+  background-color: #28a745; /* 버튼 색상 */
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 450px; /* 버튼의 가로 길이를 자동으로 조정 (기본값) */
+  height: 50px; /* 세로 길이 */
+  margin-top: 20px; /* 수량 필드와의 간격 */
+  font-size: 16px;
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.add-to-cart-btn:hover {
+  background-color: #218838; /* 마우스 오버 시 색상 */
+}
+
+
+.delivery-info {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.delivery-info p {
+    margin-bottom: 10px;
+}
+
+.product-select {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+#product-option {
+    padding: 5px;
+    width: 100%;
+}
+
+.total-price {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.total-price .price {
+    font-size: 30px;
+    color: #000000;
+}
+
+.add-to-cart {
+    display: flex;
+    align-items: center;
+}
+
+#quantity {
+    width: 50px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.delivery-info p {
+    padding: 8px 0; /* 각 항목의 위아래에 여백을 추가 */
+    border-bottom: 1px solid rgba(200, 200, 200, 0.5); /* 각 항목 하단에 회색의 구분선 추가 */
+}
+
